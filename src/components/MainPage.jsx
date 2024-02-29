@@ -53,10 +53,12 @@ const MainPage = () => {
           `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
         );
         const data = await response.json();
+        console.log(data);
         setTimezone(data.formatted);
       }
     };
     fetchTime(weatherDetails.lat, weatherDetails.lon);
+    // console.log(timezone);
   }, [weatherDetails]);
 
   function getEnteredCity(e) {

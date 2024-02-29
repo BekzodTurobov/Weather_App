@@ -53,7 +53,7 @@ const MainPage = () => {
           `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
         );
         const data = await response.json();
-        // console.log(data);
+
         setTimezone(data.formatted);
       }
     };
@@ -79,7 +79,7 @@ const MainPage = () => {
   let date = timezone ? timezone : new Date();
   const dayTime = format(date, "HH:mm");
   const dateTime = format(date, "HH:mm - EEEE MMM d");
-  console.log(dayTime);
+
   let time;
   let imgIcon;
   let bgImage;

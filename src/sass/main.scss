@@ -52,6 +52,7 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 70px;
   }
 
   h1,
@@ -85,7 +86,6 @@ h3 {
   position: absolute;
   top: 0;
   right: 0;
-  // width: 40%;
   height: 100%;
   background: rgba($color: rgb(110, 110, 110), $alpha: 0.25);
   box-shadow: 0 8px 32px 0 rgba($color: rgb(0, 0, 0), $alpha: 0.3);
@@ -93,6 +93,7 @@ h3 {
   border: 1px solid rgba($color: rgb(255, 255, 255), $alpha: 0.3);
   z-index: 1;
   padding: 3em 2em;
+  padding-bottom: 0;
   overflow-y: scroll;
 
   form {
@@ -115,11 +116,12 @@ h3 {
       color: #ccc;
     }
   }
+
   button {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1.5em;
+    padding: 1.43em;
     margin: 0;
     border: none;
     outline: none;
@@ -140,6 +142,27 @@ h3 {
     margin: 2em 0;
     border-bottom: 1px solid #ccc;
 
+    &:nth-child(2) {
+      height: 50%;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+        background: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-top: 50px solid #ccc;
+      }
+    }
+
+    &:last-child {
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
     li {
       color: #ccc;
       margin: 2.5em 0;
@@ -147,14 +170,6 @@ h3 {
 
     h4 {
       margin: 3em 0;
-    }
-  }
-
-  & > ul:last-child {
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
   }
 }

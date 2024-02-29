@@ -44,7 +44,8 @@ h3 {
   .container > div {
     display: flex;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    margin-bottom: 70px; }
   .container h1,
   .container .city-time,
   .container .weather {
@@ -71,6 +72,7 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.3);
   z-index: 1;
   padding: 3em 2em;
+  padding-bottom: 0;
   overflow-y: scroll; }
   .panel form {
     margin-bottom: 3em; }
@@ -90,7 +92,7 @@ h3 {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1.5em;
+    padding: 1.43em;
     margin: 0;
     border: none;
     outline: none;
@@ -106,15 +108,23 @@ h3 {
     padding: 0 0 1em 0;
     margin: 2em 0;
     border-bottom: 1px solid #ccc; }
+    .panel ul:nth-child(2) {
+      height: 50%;
+      overflow-y: scroll; }
+      .panel ul:nth-child(2)::-webkit-scrollbar {
+        width: 5px;
+        background: transparent; }
+      .panel ul:nth-child(2)::-webkit-scrollbar-thumb {
+        border-top: 50px solid #ccc; }
+    .panel ul:last-child li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
     .panel ul li {
       color: #ccc;
       margin: 2.5em 0; }
     .panel ul h4 {
       margin: 3em 0; }
-  .panel > ul:last-child li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; }
 
 .city {
   display: block;

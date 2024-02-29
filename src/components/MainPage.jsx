@@ -1,70 +1,90 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { IoIosSearch } from "react-icons/io";
 import { images } from "../data";
+import { regions } from "../data";
+import { nanoid } from "nanoid";
 import "../sass/main.scss";
 
 const MainPage = () => {
   const [currentCity, setCurrentCity] = useState("");
-  const [weatherDetails, setWeatherDetails] = useState([]);
-  const inputRef = useRef();
+  const [enteredCity, setEnteredCity] = useState("");
+  const [timezone, setTimezone] = useState("");
+  const [weatherDetails, setWeatherDetails] = useState({});
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude } = position.coords;
       const { longitude } = position.coords;
 
-      const fetchCountry = async function () {
-        const response = await fetch(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
-        );
-        const data = await response.json();
-        setCurrentCity(data.city);
-      };
-      fetchCountry();
-    });
-  }, []);
+      const fetchCountry = async function (city) {
+        const byCoords = `lat=${latitude}&lon=${longitude}`;
+        const byCity = `q=${city}`;
+        const param = city ? byCity : byCoords;
 
-  useEffect(() => {
-    if (currentCity) {
-      const fetchWeather = async function (city) {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=aa47bc4dd6faa742921b4d33fa26596d&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?${param}&appid=aa47bc4dd6faa742921b4d33fa26596d&units=metric&lang=en`
         );
 
         const data = await response.json();
+
         const obj = {
           name: data.name,
-          temp: data.main.temp,
+          temp: Math.round(data.main.temp),
           feels: data.main.feels,
           humidity: data.main.humidity,
           pressure: data.main.pressure,
           wind: data.wind.speed,
           weather: data.weather[0].main,
+          lat: data.coord.lat,
+          lon: data.coord.lon,
         };
 
         setWeatherDetails(obj);
       };
-      fetchWeather(currentCity);
-    }
+      fetchCountry(currentCity);
+    });
   }, [currentCity]);
+
+  useEffect(() => {
+    const fetchTime = async function (lat, lon) {
+      if (lat & lon) {
+        let response = await fetch(
+          `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
+        );
+        const data = await response.json();
+        setTimezone(data.formatted);
+      }
+    };
+    fetchTime(weatherDetails.lat, weatherDetails.lon);
+  }, [weatherDetails]);
+
+  function getEnteredCity(e) {
+    setEnteredCity(e.target.value);
+  }
 
   function submitHandler(e) {
     e.preventDefault();
-    setCurrentCity(inputRef.current.value);
-    inputRef.current.value = "";
+
+    setCurrentCity(enteredCity);
+    setEnteredCity("");
   }
 
-  const dayTime = format(new Date(), "h:mm a");
-  const dateTime = format(new Date(), "h:mm a - EEEE MMM d");
+  function selectRegion(region) {
+    setCurrentCity(region);
+  }
+
+  let date = timezone ? timezone : new Date();
+  const dayTime = format(date, "h:mm a");
+  const dateTime = format(date, "h:mm a - EEEE MMM d");
 
   let time;
   let imgIcon;
   let bgImage;
 
-  if (dayTime >= "00:00 AM" && dayTime > "18:00 PM") {
+  if (dayTime <= "6:00 AM" && dayTime < "6:00 PM") {
     time = "day";
-  } else if (dayTime < "23:59 AM" && dayTime <= "18:00 PM") {
+  } else if (dayTime > "6:00 AM" && dayTime >= "6:00 PM") {
     time = "night";
   }
 
@@ -92,6 +112,9 @@ const MainPage = () => {
   } else if (weatherDetails.weather === "Wind") {
     bgImage = time === "day" ? images[14] : images[21];
     imgIcon = images[7];
+  } else if (weatherDetails.weather === "Smoke") {
+    bgImage = time === "day" ? images[22] : images[23];
+    imgIcon = images[24];
   }
 
   return (
@@ -99,7 +122,7 @@ const MainPage = () => {
       <div className="container">
         <h3>The weather</h3>
         <div>
-          <h1>{weatherDetails.temp} °C</h1>
+          <h1>{weatherDetails.temp}°C</h1>
           <div className="city-time">
             <h1>{weatherDetails.name}</h1>
             <small>
@@ -114,13 +137,26 @@ const MainPage = () => {
       </div>
       <div className="panel">
         <form onSubmit={submitHandler}>
-          <input type="text" ref={inputRef} placeholder="enter the city..." />
+          <input
+            type="text"
+            onChange={getEnteredCity}
+            value={enteredCity}
+            placeholder="enter the city..."
+          />
           <button type="submit">
             <IoIosSearch />
           </button>
         </form>
         <ul>
-          <li className="city">{weatherDetails.name}</li>
+          {regions.map((region) => (
+            <li
+              key={nanoid()}
+              onClick={() => selectRegion(region)}
+              className="city"
+            >
+              {region}
+            </li>
+          ))}
         </ul>
         <ul>
           <h4>Weather details</h4>

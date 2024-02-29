@@ -77,16 +77,16 @@ const MainPage = () => {
   }
 
   let date = timezone ? timezone : new Date();
-  const dayTime = format(date, "h:mm a");
-  const dateTime = format(date, "h:mm a - EEEE MMM d");
-
+  const dayTime = format(date, "HH:mm");
+  const dateTime = format(date, "HH:mm - EEEE MMM d");
+  console.log(dayTime);
   let time;
   let imgIcon;
   let bgImage;
 
-  if (dayTime <= "6:00 AM" && dayTime < "6:00 PM") {
+  if (dayTime >= "6:00" && dayTime < "18:00") {
     time = "day";
-  } else if (dayTime > "6:00 AM" && dayTime >= "6:00 PM") {
+  } else if (dayTime < "6:00" && dayTime >= "18:00 PM") {
     time = "night";
   }
 

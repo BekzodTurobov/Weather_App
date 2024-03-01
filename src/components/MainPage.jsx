@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { IoIosSearch } from "react-icons/io";
 import { images } from "../data";
@@ -7,10 +7,13 @@ import { nanoid } from "nanoid";
 import "../sass/main.scss";
 
 const MainPage = () => {
-  const [currentCity, setCurrentCity] = useState("");
-  const [enteredCity, setEnteredCity] = useState("");
-  const [timezone, setTimezone] = useState("");
   const [weatherDetails, setWeatherDetails] = useState({});
+  const [currentCity, setCurrentCity] = useState("");
+  const [timezone, setTimezone] = useState("");
+  const enteredCity = useRef();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -27,7 +30,6 @@ const MainPage = () => {
         );
 
         const data = await response.json();
-
         const obj = {
           name: data.name,
           temp: Math.round(data.main.temp),
@@ -41,6 +43,7 @@ const MainPage = () => {
         };
 
         setWeatherDetails(obj);
+        setIsLoading(false);
       };
       fetchCountry(currentCity);
     });
@@ -58,18 +61,13 @@ const MainPage = () => {
       }
     };
     fetchTime(weatherDetails.lat, weatherDetails.lon);
-    // console.log(timezone);
   }, [weatherDetails]);
-
-  function getEnteredCity(e) {
-    setEnteredCity(e.target.value);
-  }
 
   function submitHandler(e) {
     e.preventDefault();
 
-    setCurrentCity(enteredCity);
-    setEnteredCity("");
+    setCurrentCity(enteredCity.current.value);
+    enteredCity.current.value = "";
   }
 
   function selectRegion(region) {
@@ -77,46 +75,50 @@ const MainPage = () => {
   }
 
   let date = timezone ? timezone : new Date();
-  const dayTime = format(date, "HH:mm");
+  const dayTime = format(date, "HH");
   const dateTime = format(date, "HH:mm - EEEE MMM d");
 
   let time;
   let imgIcon;
   let bgImage;
 
-  if (dayTime >= "6:00" && dayTime < "18:00") {
+  if (dayTime >= 6 && dayTime < 18) {
     time = "day";
-  } else if (dayTime < "6:00" && dayTime >= "18:00 PM") {
+  } else {
     time = "night";
   }
 
   if (weatherDetails.weather === "Clear") {
-    bgImage = time === "day" ? images[8] : images[15];
+    bgImage = time === "day" ? images[9] : images[10];
     imgIcon = images[0];
   } else if (weatherDetails.weather === "Clouds") {
-    bgImage = time === "day" ? images[9] : images[16];
+    bgImage = time === "day" ? images[11] : images[12];
     imgIcon = images[1];
   } else if (weatherDetails.weather === "Drizzle") {
-    bgImage = time === "day" ? images[10] : images[17];
+    bgImage = time === "day" ? images[13] : images[14];
     imgIcon = images[2];
   } else if (weatherDetails.weather === "Humidity") {
-    bgImage = time === "day" ? images[11] : images[18];
+    bgImage = time === "day" ? images[15] : images[16];
     imgIcon = images[3];
   } else if (weatherDetails.weather === "Mist") {
-    bgImage = time === "day" ? images[11] : images[18];
+    bgImage = time === "day" ? images[17] : images[18];
     imgIcon = images[4];
   } else if (weatherDetails.weather === "Rain") {
-    bgImage = time === "day" ? images[13] : images[20];
+    bgImage = time === "day" ? images[17] : images[18];
     imgIcon = images[5];
   } else if (weatherDetails.weather === "Snow") {
-    bgImage = time === "day" ? images[13] : images[20];
+    bgImage = time === "day" ? images[19] : images[20];
     imgIcon = images[6];
   } else if (weatherDetails.weather === "Wind") {
-    bgImage = time === "day" ? images[14] : images[21];
+    bgImage = time === "day" ? images[21] : images[22];
     imgIcon = images[7];
   } else if (weatherDetails.weather === "Smoke") {
-    bgImage = time === "day" ? images[22] : images[23];
-    imgIcon = images[24];
+    bgImage = time === "day" ? images[23] : images[24];
+    imgIcon = images[8];
+  }
+
+  if (isLoading) {
+    return <p className="loader"></p>;
   }
 
   return (
@@ -132,7 +134,7 @@ const MainPage = () => {
             </small>
           </div>
           <div className="weather">
-            <img src={imgIcon} alt="icon" width={50} height={50} />
+            <img src={imgIcon} alt="icon" width={75} height={75} />
             <span>{weatherDetails.weather}</span>
           </div>
         </div>
@@ -141,15 +143,14 @@ const MainPage = () => {
         <form onSubmit={submitHandler}>
           <input
             type="text"
-            onChange={getEnteredCity}
-            value={enteredCity}
+            ref={enteredCity}
             placeholder="enter the city..."
           />
           <button type="submit">
             <IoIosSearch />
           </button>
         </form>
-        <ul>
+        <ul className="regions">
           {regions.map((region) => (
             <li
               key={nanoid()}
@@ -160,7 +161,7 @@ const MainPage = () => {
             </li>
           ))}
         </ul>
-        <ul>
+        <ul className="weather-details">
           <h4>Weather details</h4>
           <li>
             <span>Pressure</span>

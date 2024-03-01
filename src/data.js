@@ -7,6 +7,7 @@ import Rain from "./assets/icon/rain.png";
 import Snow from "./assets/icon/snow.png";
 import Wind from "./assets/icon/wind.png";
 import Smoke from "./assets/icon/smoke.png";
+
 import DayClear from "./assets/background/Webp/day-clear.webp";
 import DayClouds from "./assets/background/Webp/day-cloudy.webp";
 import DayRain from "./assets/background/Webp/day-rain.webp";
@@ -26,31 +27,31 @@ import NightWind from "./assets/background/Webp/night-wind.webp";
 import NightSmoke from "./assets/background/Webp/night-smoke.webp";
 
 export const images = [
-  Clear,
-  Clouds,
-  Drizzle,
-  Humidity,
-  Mist,
-  Rain,
-  Snow,
-  Wind,
-  DayClear, //8
-  DayClouds,
-  DayDrizzle,
-  DayHumidity,
-  DayRain,
-  DaySnow,
-  DayWind,
-  NightClear, // 15
-  NightClouds,
-  NightDrizzle,
-  NightHumidity,
-  NightRain,
-  NightSnow,
-  NightWind,
-  DaySmoke,
-  NightSmoke,
-  Smoke,
+  Clear, //0
+  Clouds, //1
+  Drizzle, //2
+  Humidity, //3
+  Mist, //4
+  Rain, //5
+  Snow, //6
+  Wind, //7
+  Smoke, //8
+  DayClear, //9
+  NightClear, //10
+  DayClouds, //11
+  NightClouds, //12
+  DayDrizzle, //13
+  NightDrizzle, //14
+  DayHumidity, //15
+  NightHumidity, //16
+  DayRain, //17
+  NightRain, //18
+  DaySnow, //19
+  NightSnow, //20
+  DayWind, //21
+  NightWind, //22
+  DaySmoke, //23
+  NightSmoke, //24
 ];
 
 export const regions = [

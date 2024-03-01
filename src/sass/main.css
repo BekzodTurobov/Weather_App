@@ -4,8 +4,7 @@
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif;
-  background: #111;
+  font-family: sans-serif;
   overflow-x: hidden;
 }
 
@@ -88,31 +87,33 @@ h3 {
   z-index: 1;
   padding: 3em 2em;
   padding-bottom: 0;
-}
-.panel form {
-  margin-bottom: 3em;
+  display: grid;
+  grid-template-rows: auto 1fr 1fr;
 }
 .panel input {
-  background: none;
   border: none;
+  background: none;
   border-bottom: 1px #ccc solid;
-  padding: 0 1em 0.5em 0;
   width: 80%;
   color: #fff;
   font-size: 1.1em;
+  padding: 0 1em 0.5em 0;
 }
 .panel input:focus {
   outline: none;
 }
-.panel input:placeholder {
-  color: #ccc;
+.panel input::-moz-placeholder {
+  color: #aaa;
+}
+.panel input::placeholder {
+  color: #aaa;
 }
 .panel button {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 1.43em;
   margin: 0;
+  padding: 1.43em;
   border: none;
   outline: none;
   background: #fa6d1b;
@@ -131,7 +132,6 @@ h3 {
   border-bottom: 1px solid #ccc;
 }
 .panel ul:nth-child(2) {
-  height: 50%;
   overflow-y: scroll;
 }
 .panel ul:nth-child(2)::-webkit-scrollbar {
@@ -141,6 +141,9 @@ h3 {
 .panel ul:nth-child(2)::-webkit-scrollbar-thumb {
   border-top: 50px solid #ccc;
 }
+.panel ul:nth-child(2) li:first-child {
+  margin-top: 0;
+}
 .panel ul:last-child li {
   display: flex;
   align-items: center;
@@ -148,10 +151,11 @@ h3 {
 }
 .panel ul li {
   color: #ccc;
-  margin: 2.5em 0;
+  margin: 2em 0;
 }
 .panel ul h4 {
   margin: 3em 0;
+  margin-top: 0;
 }
 
 .city {
@@ -193,8 +197,6 @@ h3 {
 @media screen and (max-width: 900px) {
   .container {
     position: relative;
-    top: initial;
-    width: 100%;
   }
   .panel {
     top: auto;
@@ -202,27 +204,21 @@ h3 {
     bottom: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     -moz-column-gap: 3rem;
          column-gap: 3rem;
     height: 55%;
   }
   .panel form {
     grid-column: span 2;
+    margin-bottom: 3em;
   }
   .panel ul {
     margin-top: 0;
   }
-  .panel ul:nth-child(2) {
-    height: auto;
-  }
-  .panel ul:nth-child(2) li:first-child {
-    margin-top: 0;
-  }
-  .panel ul:last-child h4 {
-    margin-top: 0;
-  }
-  .container h1 {
-    font-size: 5em;
+  .weather img {
+    width: 100px;
+    height: 100px;
   }
 }
 @media screen and (max-width: 550px) {

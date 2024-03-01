@@ -4,8 +4,7 @@
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif;
-  background: #111;
+  font-family: sans-serif;
   overflow-x: hidden;
 }
 
@@ -95,25 +94,23 @@ h3 {
   z-index: 1;
   padding: 3em 2em;
   padding-bottom: 0;
-
-  form {
-    margin-bottom: 3em;
-  }
+  display: grid;
+  grid-template-rows: auto 1fr 1fr;
 
   input {
-    background: none;
     border: none;
+    background: none;
     border-bottom: 1px #ccc solid;
-    padding: 0 1em 0.5em 0;
     width: 80%;
     color: #fff;
     font-size: 1.1em;
+    padding: 0 1em 0.5em 0;
 
     &:focus {
       outline: none;
     }
-    &:placeholder {
-      color: #ccc;
+    &::placeholder {
+      color: #aaa;
     }
   }
 
@@ -121,8 +118,8 @@ h3 {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 1.43em;
     margin: 0;
+    padding: 1.43em;
     border: none;
     outline: none;
     background: #fa6d1b;
@@ -143,7 +140,6 @@ h3 {
     border-bottom: 1px solid #ccc;
 
     &:nth-child(2) {
-      height: 50%;
       overflow-y: scroll;
 
       &::-webkit-scrollbar {
@@ -152,6 +148,12 @@ h3 {
       }
       &::-webkit-scrollbar-thumb {
         border-top: 50px solid #ccc;
+      }
+
+      li {
+        &:first-child {
+          margin-top: 0;
+        }
       }
     }
 
@@ -165,11 +167,12 @@ h3 {
 
     li {
       color: #ccc;
-      margin: 2.5em 0;
+      margin: 2em 0;
     }
 
     h4 {
       margin: 3em 0;
+      margin-top: 0;
     }
   }
 }
@@ -215,8 +218,6 @@ h3 {
 @media screen and (max-width: 900px) {
   .container {
     position: relative;
-    top: initial;
-    width: 100%;
   }
 
   .panel {
@@ -225,36 +226,24 @@ h3 {
     bottom: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
     column-gap: 3rem;
     height: 55%;
 
     form {
       grid-column: span 2;
+      margin-bottom: 3em;
     }
 
     ul {
       margin-top: 0;
-      &:nth-child(2) {
-        height: auto;
-
-        li {
-          &:first-child {
-            margin-top: 0;
-          }
-        }
-      }
-
-      &:last-child {
-        h4 {
-          margin-top: 0;
-        }
-      }
     }
   }
 
-  .container {
-    h1 {
-      font-size: 5em;
+  .weather {
+    img {
+      width: 100px;
+      height: 100px;
     }
   }
 }

@@ -128,7 +128,7 @@ h3 {
 }
 .panel ul {
   padding: 0 0 1em 0;
-  margin: 2em 0;
+  margin: 2.5em 0;
   border-bottom: 1px solid #ccc;
 }
 .panel ul:nth-child(2) {
@@ -211,10 +211,6 @@ h3 {
   }
   .panel form {
     grid-column: span 2;
-    margin-bottom: 3em;
-  }
-  .panel ul {
-    margin-top: 0;
   }
   .weather img {
     width: 100px;

@@ -136,7 +136,7 @@ h3 {
 
   ul {
     padding: 0 0 1em 0;
-    margin: 2em 0;
+    margin: 2.5em 0;
     border-bottom: 1px solid #ccc;
 
     &:nth-child(2) {
@@ -232,11 +232,6 @@ h3 {
 
     form {
       grid-column: span 2;
-      margin-bottom: 3em;
-    }
-
-    ul {
-      margin-top: 0;
     }
   }
 

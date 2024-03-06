@@ -9,7 +9,7 @@ import "../sass/main.scss";
 const MainPage = () => {
   const [weatherDetails, setWeatherDetails] = useState({});
   const [currentCity, setCurrentCity] = useState("");
-  const [timezone, setTimezone] = useState("");
+  const [timezone, setTimezone] = useState(new Date());
   const enteredCity = useRef();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -28,16 +28,16 @@ const MainPage = () => {
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?${param}&appid=aa47bc4dd6faa742921b4d33fa26596d&units=metric&lang=en`
         );
-
         const data = await response.json();
         const obj = {
-          name: data.name,
+          city: data.name,
           temp: Math.round(data.main.temp),
           feels: data.main.feels,
           humidity: data.main.humidity,
           pressure: data.main.pressure,
           wind: data.wind.speed,
           weather: data.weather[0].main,
+          timezone: data.timezone,
           lat: data.coord.lat,
           lon: data.coord.lon,
         };
@@ -45,23 +45,36 @@ const MainPage = () => {
         setWeatherDetails(obj);
         setIsLoading(false);
       };
+
       fetchCountry(currentCity);
     });
   }, [currentCity]);
 
   useEffect(() => {
-    const fetchTime = async function (lat, lon) {
-      if (lat & lon) {
-        let response = await fetch(
-          `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
-        );
-        const data = await response.json();
+    const calcTime = function (offset) {
+      const now = new Date();
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      const curDate = new Date(utc + 1000 * offset);
 
-        setTimezone(data.formatted);
-      }
+      setTimezone(curDate);
     };
-    fetchTime(weatherDetails.lat, weatherDetails.lon);
+
+    weatherDetails.timezone && calcTime(weatherDetails.timezone);
   }, [weatherDetails]);
+  // //////////////////
+  // useEffect(() => {
+  //   const fetchTime = async function (lat, lon) {
+  //     if (lat & lon) {
+  //       let response = await fetch(
+  //         `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
+  //       );
+  //       const data = await response.json();
+  //       console.log(data);
+  //       setTimezone(data.formatted);
+  //     }
+  //   };
+  //   fetchTime(weatherDetails.lat, weatherDetails.lon);
+  // }, []);
 
   function submitHandler(e) {
     e.preventDefault();
@@ -74,7 +87,7 @@ const MainPage = () => {
     setCurrentCity(region);
   }
 
-  let date = timezone ? timezone : new Date();
+  let date = timezone;
   const dayTime = format(date, "HH");
   const dateTime = format(date, "HH:mm - EEEE MMM d");
 
@@ -115,6 +128,9 @@ const MainPage = () => {
   } else if (weatherDetails.weather === "Smoke") {
     bgImage = time === "day" ? images[23] : images[24];
     imgIcon = images[8];
+  } else if (weatherDetails.weather === "Fog") {
+    bgImage = time === "day" ? images[23] : images[24];
+    imgIcon = images[8];
   }
 
   if (isLoading) {
@@ -128,7 +144,7 @@ const MainPage = () => {
         <div>
           <h1>{weatherDetails.temp}°C</h1>
           <div className="city-time">
-            <h1>{weatherDetails.name}</h1>
+            <h1>{weatherDetails.city}</h1>
             <small>
               <span>{dateTime}</span>
             </small>

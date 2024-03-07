@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { format } from "date-fns";
 import { IoIosSearch } from "react-icons/io";
-import { images } from "../data";
-import { regions } from "../data";
+import { icons, bgImages, regions } from "../data";
 import { nanoid } from "nanoid";
 import "../sass/main.scss";
 
@@ -32,14 +31,11 @@ const MainPage = () => {
         const obj = {
           city: data.name,
           temp: Math.round(data.main.temp),
-          feels: data.main.feels,
           humidity: data.main.humidity,
           pressure: data.main.pressure,
           wind: data.wind.speed,
           weather: data.weather[0].main,
           timezone: data.timezone,
-          lat: data.coord.lat,
-          lon: data.coord.lon,
         };
 
         setWeatherDetails(obj);
@@ -61,7 +57,7 @@ const MainPage = () => {
 
     weatherDetails.timezone && calcTime(weatherDetails.timezone);
   }, [weatherDetails]);
-  // //////////////////
+
   // useEffect(() => {
   //   const fetchTime = async function (lat, lon) {
   //     if (lat & lon) {
@@ -69,7 +65,6 @@ const MainPage = () => {
   //         `http://api.timezonedb.com/v2.1/get-time-zone?key=0O4JWHTQOWX7&format=json&by=position&lat=${lat}&lng=${lon}`
   //       );
   //       const data = await response.json();
-  //       console.log(data);
   //       setTimezone(data.formatted);
   //     }
   //   };
@@ -87,50 +82,16 @@ const MainPage = () => {
     setCurrentCity(region);
   }
 
+  let bgImage;
   let date = timezone;
+
   const dayTime = format(date, "HH");
   const dateTime = format(date, "HH:mm - EEEE MMM d");
 
-  let time;
-  let imgIcon;
-  let bgImage;
-
   if (dayTime >= 6 && dayTime < 18) {
-    time = "day";
+    bgImage = bgImages.day[weatherDetails.weather];
   } else {
-    time = "night";
-  }
-
-  if (weatherDetails.weather === "Clear") {
-    bgImage = time === "day" ? images[9] : images[10];
-    imgIcon = images[0];
-  } else if (weatherDetails.weather === "Clouds") {
-    bgImage = time === "day" ? images[11] : images[12];
-    imgIcon = images[1];
-  } else if (weatherDetails.weather === "Drizzle") {
-    bgImage = time === "day" ? images[13] : images[14];
-    imgIcon = images[2];
-  } else if (weatherDetails.weather === "Humidity") {
-    bgImage = time === "day" ? images[15] : images[16];
-    imgIcon = images[3];
-  } else if (weatherDetails.weather === "Mist") {
-    bgImage = time === "day" ? images[17] : images[18];
-    imgIcon = images[4];
-  } else if (weatherDetails.weather === "Rain") {
-    bgImage = time === "day" ? images[17] : images[18];
-    imgIcon = images[5];
-  } else if (weatherDetails.weather === "Snow") {
-    bgImage = time === "day" ? images[19] : images[20];
-    imgIcon = images[6];
-  } else if (weatherDetails.weather === "Wind") {
-    bgImage = time === "day" ? images[21] : images[22];
-    imgIcon = images[7];
-  } else if (weatherDetails.weather === "Smoke") {
-    bgImage = time === "day" ? images[23] : images[24];
-    imgIcon = images[8];
-  } else if (weatherDetails.weather === "Fog") {
-    bgImage = time === "day" ? images[23] : images[24];
-    imgIcon = images[8];
+    bgImage = bgImages.night[weatherDetails.weather];
   }
 
   if (isLoading) {
@@ -150,7 +111,12 @@ const MainPage = () => {
             </small>
           </div>
           <div className="weather">
-            <img src={imgIcon} alt="icon" width={75} height={75} />
+            <img
+              src={icons[weatherDetails.weather]}
+              alt="icon"
+              width={75}
+              height={75}
+            />
             <span>{weatherDetails.weather}</span>
           </div>
         </div>

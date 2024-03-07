@@ -26,41 +26,52 @@ import NightHumidity from "./assets/background/Webp/night-humidity.webp";
 import NightWind from "./assets/background/Webp/night-wind.webp";
 import NightSmoke from "./assets/background/Webp/night-smoke.webp";
 
-export const images = [
-  Clear, //0
-  Clouds, //1
-  Drizzle, //2
-  Humidity, //3
-  Mist, //4
-  Rain, //5
-  Snow, //6
-  Wind, //7
-  Smoke, //8
-  DayClear, //9
-  NightClear, //10
-  DayClouds, //11
-  NightClouds, //12
-  DayDrizzle, //13
-  NightDrizzle, //14
-  DayHumidity, //15
-  NightHumidity, //16
-  DayRain, //17
-  NightRain, //18
-  DaySnow, //19
-  NightSnow, //20
-  DayWind, //21
-  NightWind, //22
-  DaySmoke, //23
-  NightSmoke, //24
-];
+export const icons = {
+  Clear,
+  Clouds,
+  Drizzle,
+  Humidity,
+  Mist,
+  Rain,
+  Snow,
+  Wind,
+  Smoke,
+};
+
+export const bgImages = {
+  day: {
+    Clear: DayClear,
+    Clouds: DayClouds,
+    Drizzle: DayDrizzle,
+    Humidity: DayHumidity,
+    Rain: DayRain,
+    Mist: DaySmoke,
+    Snow: DaySnow,
+    Wind: DayWind,
+    Smoke: DaySmoke,
+    Haze: DaySmoke,
+  },
+  night: {
+    Clear: NightClear,
+    Clouds: NightClouds,
+    Drizzle: NightDrizzle,
+    Humidity: NightHumidity,
+    Rain: NightRain,
+    Mist: NightSmoke,
+    Snow: NightSnow,
+    Wind: NightWind,
+    Smoke: NightSmoke,
+    Haze: NightSmoke,
+  },
+};
 
 export const regions = [
   "Andijan",
   "Bukhara",
   "Jizzakh",
-  "Qashqadaryo",
   "Navoi",
   "Namangan",
+  "Qashqadaryo",
   "Samarkand",
   "Sirdaryo",
   "Termez",
